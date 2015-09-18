@@ -1,25 +1,24 @@
 {
-  "name": "backbone-singleton",
+  "name": "singleton-js",
   "version": "1.0.0",
-  "description": "Convert Backbone classes seamlessly into singletons",
-  "main": "dist/backbone-singleton.js",
+  "description": "Convert classes seamlessly into singletons",
+  "main": "dist/singleton.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ryanbeard/backbone-singleton.git"
+    "url": "https://github.com/ryanbeard/singleton-js.git"
   },
   "keywords": [
-    "backbone",
     "singleton"
   ],
   "author": "Ryan Beard",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ryanbeard/backbone-singleton/issues"
+    "url": "https://github.com/ryanbeard/singleton-js/issues"
   },
-  "homepage": "https://github.com/ryanbeard/backbone-singleton",
+  "homepage": "https://github.com/ryanbeard/singleton-js",
   "devDependencies": {
     "gulp": "^3.9.0",
     "gulp-license": "^1.0.0",

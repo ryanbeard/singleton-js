@@ -6,49 +6,49 @@
         module.exports = factory();
     }
     else {
-        root.BackboneSingleton = factory();
+        root.singleton = factory();
     }
 }(this, function() {
     'use strict';
 
+    // Helper to check for arguments. Throws an error if passed in.
+    var checkArguments = function (args) {
+        if (args.length) {
+            throw new Error('cannot pass arguments into an already instantiated singleton');
+        }
+    };
 
-    return function (BackboneClass, options) {
+    return function (Class, options) {
         options || (options = {});
-
-        // Helper to check for arguments. Throws an error if passed in.
-        var checkArguments = function (args) {
-            if (args.length) {
-                throw new Error('cannot pass arguments into an already instantiated singleton');
-            }
-        };
 
         // Wrapper around the class. Allows us to call new without generating an error.
         var WrappedClass = function() {
-            if (!BackboneClass.instance) {
+            if (!Class.instance) {
                 // Proxy class that allows us to pass through all arguments on singleton instantiation.
                 var F = function (args) {
-                    return BackboneClass.apply(this, args);
+                    return Class.apply(this, args);
                 };
 
-                // Extend the given Backbone class with a function that sets the instance for future use.
-                BackboneClass = BackboneClass.extend({
-                    __setInstance: function () {
-                        BackboneClass.instance = this;
-                    }
-                });
+                // Extend the given class with a temporary function that sets the instance for future use.
+                Class.prototype.__setInstance = function () {
+                    Class.instance = this;
+                };
 
                 // Connect the proxy class to its counterpart class.
-                F.prototype = BackboneClass.prototype;
+                F.prototype = Class.prototype;
 
                 // Instantiate the proxy, passing through any arguments, then store the instance.
                 (new F(arguments.length ? arguments : options.arguments)).__setInstance();
+
+                // Remove the temporary instance setter function so we don't leave any rubbish lying around.
+                delete Class.prototype.__setInstance;
             }
             else {
                 // Make sure we're not trying to instantiate it with arguments again.
                 checkArguments(arguments);
             }
 
-            return BackboneClass.instance;
+            return Class.instance;
         };
 
         // Immediately instantiate the class.
